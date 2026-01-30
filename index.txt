@@ -71,7 +71,7 @@ h2 { text-align:center; color:#003366; }
    🔗 YOUR APPS SCRIPT URL
 ============================== */
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycby-eT20zHfUAXSiUKhFnVszn-gxy1CcMb_Ek6ukKUgGBbPQkYSQ8Nlw4q0UTSArm8jxiw/exec";
+"https://script.google.com/macros/s/AKfycbzYquhpmzv_7iDNq3XeNMWp0T_l49jy8jd-XK3scfUgGY-o4iATft6aUWZCZNYaV43zIg/exec";
 
 /* ==============================
    ELEMENT
@@ -148,5 +148,6 @@ Html5Qrcode.getCameras().then(cams => {
 
 </body>
 </html>
+
 
 

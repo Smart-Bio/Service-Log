@@ -90,7 +90,7 @@ legend {
 
 <script>
 const SHEET_URL =
-"https://script.google.com/macros/s/AKfycbxavJU1ZWdA5qD-E4lau_vR_eV9hoMVVFn1uMWYeI6QddJWHlu-Q_exMXG-_AL5D1Huwg/Asset_Master";
+"https://opensheet.elk.sh/1uiZPSqcAJNtrt5KtLLjvVB154DYSGqCvh6HMqwEQDPM/Asset_Master";
 
 const assetCard = document.getElementById("assetCard");
 
@@ -136,8 +136,8 @@ function showAsset(a) {
 
     <hr>
 
-    <button class="btn" onclick="window.open('https://script.google.com/macros/s/AKfycbxavJU1ZWdA5qD-E4lau_vR_eV9hoMVVFn1uMWYeI6QddJWHlu-Q_exMXG-_AL5D1Huwg/exec?page=complaint&asset=${a.Asset_No}','_blank')"> Report Breakdown</button>
-    <button class="btn" onclick="window.open('https://script.google.com/macros/s/AKfycbxavJU1ZWdA5qD-E4lau_vR_eV9hoMVVFn1uMWYeI6QddJWHlu-Q_exMXG-_AL5D1Huwg/exec?page=close&asset=${a.Asset_No}','_blank')"> Close Breakdown</button>
+    <button class="btn" onclick="window.open('https://script.google.com/macros/s/AKfycbzwRVUE2AbQQTDDN6Gh0GsUvMtg_7E4e2xJ6yjeNtBw1oyUFB3DjFCUAD4aEHo_IuPhVA/exec?page=complaint&asset=${a.Asset_No}','_blank')"> Report Breakdown</button>
+    <button class="btn" onclick="window.open('https://script.google.com/macros/s/AKfycbzwRVUE2AbQQTDDN6Gh0GsUvMtg_7E4e2xJ6yjeNtBw1oyUFB3DjFCUAD4aEHo_IuPhVA/exec?page=close&asset=${a.Asset_No}','_blank')"> Close Breakdown</button>
 
   `;
   assetCard.style.display = "block";
@@ -163,5 +163,3 @@ Html5Qrcode.getCameras().then(cams => {
 
 </body>
 </html>
-
-

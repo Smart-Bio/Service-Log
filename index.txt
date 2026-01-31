@@ -163,3 +163,4 @@ Html5Qrcode.getCameras().then(cams => {
 
 </body>
 </html>
+

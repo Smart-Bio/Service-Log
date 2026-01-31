@@ -90,7 +90,7 @@ legend {
 
 <script>
 const SHEET_URL =
-"https://opensheet.elk.sh/1uiZPSqcAJNtrt5KtLLjvVB154DYSGqCvh6HMqwEQDPM/Asset_Master";
+"https://script.google.com/macros/s/AKfycbxavJU1ZWdA5qD-E4lau_vR_eV9hoMVVFn1uMWYeI6QddJWHlu-Q_exMXG-_AL5D1Huwg/Asset_Master";
 
 const assetCard = document.getElementById("assetCard");
 
@@ -163,4 +163,5 @@ Html5Qrcode.getCameras().then(cams => {
 
 </body>
 </html>
+
 

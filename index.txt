@@ -1,102 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hospital Service Request</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://unpkg.com/html5-qrcode"></script>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #eef2f5;
-  margin: 0;
-  padding: 15px;
-}
-.logo { text-align:center; }
-.logo img { max-height:80px; }
-h2 { text-align:center; color:#003366; }
-#reader { width:100%; max-width:360px; margin:auto; }
-.card {
-  background:#fff;
-  border-radius:10px;
-  padding:15px;
-  margin-top:15px;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
-.row {
-  display:grid;
-  grid-template-columns:130px 10px auto;
-  margin-bottom:6px;
-}
-.label { font-weight:bold; }
-.btn {
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:6px;
-  background:#0066cc;
-  color:#fff;
-  font-size:16px;
-}
+body { font-family: Arial; background:#eef2f5; padding:10px }
+#reader { width:300px; margin:auto }
+.card { background:#fff; padding:15px; margin-top:10px; border-radius:8px }
+button { width:100%; padding:10px; margin-top:8px }
 </style>
 </head>
 
 <body>
-
-<div class="logo">
-  <img src="logo.jpg">
-</div>
-
-<h2>Service Request Scanner</h2>
+<h3 align="center">Unified Equipment Scanner</h3>
 
 <div id="reader"></div>
-<div id="assetCard" class="card" style="display:none;"></div>
-
-<script src="https://unpkg.com/html5-qrcode"></script>
+<div id="result" class="card" style="display:none"></div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCaXuYEGwQ9lTJVEGQCXyOX3fHDPjwRmMjzuyspD1jktTgJmC9ddDpCfHyZnpR4gLX9g/exec";
-
-const SHEET_URL =
-"https://opensheet.elk.sh/1uiZPSqcAJNtrt5KtLLjvVB154DYSGqCvh6HMqwEQDPM/Asset_Master";
-
-const assetCard = document.getElementById("assetCard");
-
-function showAsset(a) {
-  assetCard.innerHTML = `
-    <div class="row"><div class="label">Asset</div>: ${a.Asset_No}</div>
-    <div class="row"><div class="label">Department</div>: ${a.Department}</div>
-    <div class="row"><div class="label">Equipment</div>: ${a.Equipment}</div>
-    <hr>
-    <button class="btn"
-      onclick="window.open('${SCRIPT_URL}?page=complaint&asset=${a.Asset_No}','_blank')">
-      Report Breakdown
-    </button>
-    <button class="btn"
-      onclick="window.open('${SCRIPT_URL}?page=close&asset=${a.Asset_No}','_blank')">
-      Close Breakdown
-    </button>`;
-  assetCard.style.display = "block";
-}
-
 const qr = new Html5Qrcode("reader");
 
 Html5Qrcode.getCameras().then(cams => {
-  const cam = cams.find(c => c.label.toLowerCase().includes("back")) || cams[0];
-  qr.start(cam.id, { fps: 15, qrbox: 280 }, text => {
+  qr.start(cams[0].id, { fps: 10, qrbox: 250 }, txt => {
     qr.stop();
-    fetch(SHEET_URL)
-      .then(r => r.json())
-      .then(d => {
-        const asset = d.find(x => x.Asset_No === text.trim());
-        if (!asset) return alert("Asset not found");
-        showAsset(asset);
-      });
+    google.script.run.withSuccessHandler(showAsset)
+      .findAsset(txt.trim());
   });
 });
-</script>
 
+function showAsset(a) {
+  if (!a) return alert("Asset not found");
+  document.getElementById("result").style.display="block";
+  document.getElementById("result").innerHTML = `
+    <b>Asset:</b> ${a.Asset_No}<br>
+    <b>Dept:</b> ${a.Department}<br>
+    <b>Equipment:</b> ${a.Equipment}<br><br>
+
+    <button onclick="openPage('complaint','${a.Asset_No}','${a._sheetId}')">Report Breakdown</button>
+    <button onclick="openPage('close','${a.Asset_No}','${a._sheetId}')">Close Breakdown</button>
+  `;
+}
+
+function openPage(p,a,s){
+  window.open(`?page=${p}&asset=${a}&sheet=${s}`,'_blank');
+}
+</script>
 </body>
 </html>
-

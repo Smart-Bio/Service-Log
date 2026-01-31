@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biomedical QR Scanner</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+body{font-family:Arial;background:#eef2f5;padding:15px}
+#reader{max-width:360px;margin:auto}
+.card{background:#fff;padding:15px;border-radius:10px;margin-top:15px}
+.btn{width:100%;padding:10px;margin-top:8px;background:#0066cc;color:#fff;border:none;border-radius:6px}
+.row{display:grid;grid-template-columns:120px 10px auto;margin-bottom:6px}
+</style>
+</head>
+
+<body>
+
+<h3 align="center">Biomedical Equipment Scanner</h3>
+
+<div id="reader"></div>
+<div id="assetCard" class="card" style="display:none"></div>
+
+<script>
+const assetCard = document.getElementById("assetCard");
+
+function showAsset(a){
+  assetCard.innerHTML = `
+  <div class="row"><b>Asset No</b>: ${a.Asset_No}</div>
+  <div class="row"><b>Department</b>: ${a.Department}</div>
+  <div class="row"><b>Equipment</b>: ${a.Equipment}</div>
+  <div class="row"><b>Model</b>: ${a.Model}</div>
+  <div class="row"><b>Make</b>: ${a.Make}</div>
+
+  <button class="btn" onclick="openPage('complaint','${a.Asset_No}')">Report Breakdown</button>
+  <button class="btn" onclick="openPage('close','${a.Asset_No}')">Close Breakdown</button>
+  `;
+  assetCard.style.display="block";
+}
+
+function openPage(p,a){
+  window.open(`?page=${p}&asset=${a}`,'_blank');
+}
+
+const qr = new Html5Qrcode("reader");
+
+Html5Qrcode.getCameras().then(cams=>{
+  qr.start(cams[0].id,{fps:15,qrbox:250},txt=>{
+    qr.stop();
+    google.script.run
+      .withSuccessHandler(res=>{
+        if(!res) return alert("Asset not found");
+        showAsset(res);
+      })
+      .getAssetDetails(txt.trim());
+  });
+});
+</script>
+
+</body>
+</html>
